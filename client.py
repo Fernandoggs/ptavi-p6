@@ -14,38 +14,26 @@ METHOD = sys.argv[1]
 # Cadena con informacion del destinatario
 log_str = str(sys.argv[2])
 # Dirección IP del servidor.
-SERVER = 'localhost'
-SERVER2 = log_str[log_str.find('@')+1:log_str.find(':')]
-NICK = log_str[:log_str.find('@')]
+server_aux = log_str.split('@')[1]
+SERVER = server_aux.split(':')[0]
+#Nick de la persona ala que va dirigido el mensaje
+NICK = log_str.split(':')[0]
 #Puerto SIP
-PORT = 6001
-SIP_PORT = int(log_str[log_str.find(':')+1:])
-
-#########################################################################
-#METODO = sys.argv[1]
-#cadena = str(sys.argv[2])
-#LOGIN = cadena[:cadena.find('@')]
-#IP = cadena[cadena.find('@')+1:cadena.find(':')]
-#PUERTO = int(cadena[cadena.find(':')+1:])
-
-#LINE = METODO + ' sip:'+LOGIN+'@'+IP+' SIP/2.0\r\n'
-#LINE2 = 'ACK sip:'+LOGIN+'@'+IP+' SIP/2.0\r\n'
-#LINE3 = 'BYE sip:'+LOGIN+'@'+IP+' SIP/2.0\r\n'
-#########################################################################
+PORT = int(server_aux.split(':')[1])
 # Contenido que vamos a enviar
-LINE = '¡Hola mundo!'
+LINE = METHOD + ' sip:' + NICK + ' SIP/2.0\r\n'
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-my_socket.connect((SERVER, PORT))
+my_socket.connect(('127.0.0.1', PORT))
 #TRAZA#####################################
-print("METODO introducido: " + METHOD)
-print("NICK introducida: " + NICK)
-print("IP introducida: " + SERVER2)
-print("PUERTO SIP introducido: " + SIP_PORT)
+print("METODO: " , METHOD)
+print("NICK: " , NICK)
+print("IP_SERVER: " , SERVER)
+print("PUERTO SIP: " ,PORT)
 #TRAZA#####################################
-print("Enviando: " + LINE)
+print("Enviando: " , LINE)
 my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
 data = my_socket.recv(1024)
 
