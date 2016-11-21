@@ -7,7 +7,7 @@ Programa cliente que abre un socket a un servidor
 import socket
 import sys
 
-# Condiciones de entrada 
+#Condiciones de entrada 
 if not len(sys.argv) == 3:
 	sys.exit("Usage: python client.py method receiver@IPReceiver:SIPport")
 if str(sys.argv[2].find('@')) == -1:
@@ -17,13 +17,13 @@ if str(sys.argv[2].find(':')) == -1:
 if sys.argv[1] != 'INVITE' and sys.argv[1] != 'BYE':
     sys.exit("Usage: python client.py method receiver@IPReceiver:SIPport")
 
-# Metodo que quiere enviar el cliente
+#Metodo que quiere enviar el cliente
 METHOD = sys.argv[1]
 
-# Cadena con informacion del destinatario
+#Cadena con informacion del destinatario
 log_str = str(sys.argv[2])
 
-# Dirección IP del servidor
+#Dirección IP del servidor
 
 server_aux = log_str.split('@')[1]
 SERVER = server_aux.split(':')[0]
@@ -34,12 +34,12 @@ NICK = log_str.split(':')[0]
 #Puerto SIP
 PORT = int(server_aux.split(':')[1])
 
-# Contenido que vamos a enviar
+#Contenido que vamos a enviar
 REQUEST = METHOD + ' sip:' + NICK + ' SIP/2.0\r\n'
 ACK = 'ACK sip:'+ NICK + ' SIP/2.0\r\n'
 BYE = 'BYE sip:'+ NICK + ' SIP/2.0\r\n'
 
-# Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
+#Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect(('127.0.0.1', PORT))
@@ -61,6 +61,6 @@ if Reply == "SIP/2.0 100 Trying\r\nSIP/2.0 180 Ring\r\nSIP/2.0 200 OK\r\n\r\n":
 
 print("Terminando socket...")
 
-# Cerramos todo
+#Cerramos todo
 my_socket.close()
 print("Fin.")
