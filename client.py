@@ -43,11 +43,22 @@ BYE = 'BYE sip:'+ NICK + ' SIP/2.0\r\n'
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect(('127.0.0.1', PORT))
-print("Enviando: " , REQUEST)
-my_socket.send(bytes(REQUEST, 'utf-8') + b'\r\n')
-data = my_socket.recv(1024)
 
-print('Recibido -- ', data.decode('utf-8'))
+if METHOD == "INVITE":
+    print("Enviando: " , REQUEST)
+    my_socket.send(bytes(REQUEST, 'utf-8') + b'\r\n')
+    data = my_socket.recv(1024)
+    Reply = data.decode('utf-8')
+
+print('Recibido -- ', Reply)
+if Reply == "SIP/2.0 100 Trying\r\nSIP/2.0 180 Ring\r\nSIP/2.0 200 OK\r\n\r\n":
+    print("Enviando: " + ACK)
+    my_socket.send(bytes(ACK, 'utf-8') + b'\r\n')
+    data = my_socket.recv(1024)
+    print("Enviando: " + BYE)
+    my_socket.send(bytes(BYE, 'utf-8') + b'\r\n')
+    data = my_socket.recv(1024)
+
 print("Terminando socket...")
 
 # Cerramos todo
