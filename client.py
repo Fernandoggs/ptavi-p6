@@ -28,7 +28,7 @@ log_str = str(sys.argv[2])
 server_aux = log_str.split('@')[1]
 SERVER = server_aux.split(':')[0]
 
-#Nick de la persona ala que va dirigido el mensaje
+#Nick de la persona a la que va dirigido el mensaje
 NICK = log_str.split(':')[0]
 
 #Puerto SIP
